@@ -3,13 +3,12 @@
 import { WebviewExtension } from './webview_extension';
 
 export class ShaderPreambleExtension implements WebviewExtension {
-    private shaderPreamble: string;
+  private shaderPreamble: string;
 
-    private preambleExtensions: WebviewExtension[];
+  private preambleExtensions: WebviewExtension[];
 
-    constructor() {
-        this.shaderPreamble = 
-`\
+  constructor() {
+    this.shaderPreamble = `\
 uniform vec3        iResolution;
 uniform float       iTime;
 uniform float       iTimeDelta;
@@ -35,21 +34,25 @@ uniform float       iSampleRate;
 #define iGlobalFrame iFrame
 
 #define SHADER_TOY`;
-        this.preambleExtensions = [];
-    }
+    this.preambleExtensions = [];
+  }
 
-    public getShaderPreamble() {
-        return this.shaderPreamble + '\n' + this.preambleExtensions.map((ext) => ext.generateContent()).join('\n');
-    }
-    public getShaderPreambleLineNumbers() {
-        return this.getShaderPreamble().split(/\r\n|\n/).length;
-    }
+  public getShaderPreamble() {
+    return (
+      this.shaderPreamble +
+      '\n' +
+      this.preambleExtensions.map((ext) => ext.generateContent()).join('\n')
+    );
+  }
+  public getShaderPreambleLineNumbers() {
+    return this.getShaderPreamble().split(/\r\n|\n/).length;
+  }
 
-    public addPreambleExtension(extension: WebviewExtension) {
-        this.preambleExtensions.push(extension);
-    }
+  public addPreambleExtension(extension: WebviewExtension) {
+    this.preambleExtensions.push(extension);
+  }
 
-    public generateContent(): string {
-        return `${this.getShaderPreambleLineNumbers()}`;
-    }
+  public generateContent(): string {
+    return `${this.getShaderPreambleLineNumbers()}`;
+  }
 }

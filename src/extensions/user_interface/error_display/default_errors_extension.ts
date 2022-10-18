@@ -3,8 +3,8 @@
 import { WebviewExtension } from '../../webview_extension';
 
 export class DefaultErrorsExtension implements WebviewExtension {
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 console.error = function (message) {
     if('7' in arguments) {
         let message = arguments[7].replace(/ERROR: \\d+:(\\d+):\\W(.*)\\n/g, function(match, line, error) {
@@ -19,5 +19,5 @@ console.error = function (message) {
         $('#message').append('</ul>');
     }
 };`;
-    }
+  }
 }

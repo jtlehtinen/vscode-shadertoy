@@ -3,8 +3,8 @@
 import { WebviewExtension } from './webview_extension';
 
 export class AdvanceTimeIfNotPausedExtension implements WebviewExtension {
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 if (paused == false) {
     deltaTime = clock.getDelta();
     time = startingTime + clock.getElapsedTime() - pausedTime;
@@ -17,5 +17,5 @@ if (paused == false) {
 } else {
     deltaTime = 0.0;
 }`;
-    }
+  }
 }

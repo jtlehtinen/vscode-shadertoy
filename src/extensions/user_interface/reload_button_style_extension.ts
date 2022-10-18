@@ -3,14 +3,14 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class ReloadButtonStyleExtension implements WebviewExtension {
-    private reloadResourcePath: string;
+  private reloadResourcePath: string;
 
-    constructor(getWebviewResourcePath: (relativePath: string) => string) {
-        this.reloadResourcePath = getWebviewResourcePath('reload.png');
-    }
+  constructor(getWebviewResourcePath: (relativePath: string) => string) {
+    this.reloadResourcePath = getWebviewResourcePath('reload.png');
+  }
 
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 #reload {
     position: absolute;
     border: none;
@@ -33,5 +33,5 @@ export class ReloadButtonStyleExtension implements WebviewExtension {
     background-color: lightgray;
     transition-duration: 0.1s;
 }`;
-    }
+  }
 }

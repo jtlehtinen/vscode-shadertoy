@@ -3,8 +3,8 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class KeyboardCallbacksExtension implements WebviewExtension {
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 document.addEventListener('keydown', function(evt) {
     const i = evt.keyCode;
     if (i >= 0 && i <= 255) {
@@ -37,5 +37,5 @@ document.addEventListener('keyup', function(evt) {
         keyBoardTexture.needsUpdate = true;
     }
 });`;
-    }
+  }
 }

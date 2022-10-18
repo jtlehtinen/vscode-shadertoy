@@ -3,11 +3,11 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class KeyboardShaderExtension implements WebviewExtension {
-    private shaderPreamble: string;
-    private shaderPreambleLineNumbers: number;
+  private shaderPreamble: string;
+  private shaderPreambleLineNumbers: number;
 
-    constructor() {
-        this.shaderPreamble =  `\
+  constructor() {
+    this.shaderPreamble = `\
 const int Key_Backspace = 8, Key_Tab = 9, Key_Enter = 13, Key_Shift = 16, Key_Ctrl = 17, Key_Alt = 18, Key_Pause = 19, Key_Caps = 20, Key_Escape = 27, Key_PageUp = 33, Key_PageDown = 34, Key_End = 35,
     Key_Home = 36, Key_LeftArrow = 37, Key_UpArrow = 38, Key_RightArrow = 39, Key_DownArrow = 40, Key_Insert = 45, Key_Delete = 46, Key_0 = 48, Key_1 = 49, Key_2 = 50, Key_3 = 51, Key_4 = 52,
     Key_5 = 53, Key_6 = 54, Key_7 = 55, Key_8 = 56, Key_9 = 57, Key_A = 65, Key_B = 66, Key_C = 67, Key_D = 68, Key_E = 69, Key_F = 70, Key_G = 71, Key_H = 72,
@@ -32,17 +32,17 @@ bool isKeyReleased(int key) {
     vec2 uv = vec2(float(key) / 255.0, 0.875);
     return texture2D(iKeyboard, uv).r > 0.0;
 }`;
-        this.shaderPreambleLineNumbers = this.shaderPreamble.split(/\r\n|\n/).length;
-    }
+    this.shaderPreambleLineNumbers = this.shaderPreamble.split(/\r\n|\n/).length;
+  }
 
-    public getShaderPreamble() {
-        return this.shaderPreamble;
-    }
-    public getShaderPreambleLineNumbers() {
-        return this.shaderPreambleLineNumbers;
-    }
+  public getShaderPreamble() {
+    return this.shaderPreamble;
+  }
+  public getShaderPreambleLineNumbers() {
+    return this.shaderPreambleLineNumbers;
+  }
 
-    public generateContent(): string {
-        return this.getShaderPreamble();
-    }
+  public generateContent(): string {
+    return this.getShaderPreamble();
+  }
 }

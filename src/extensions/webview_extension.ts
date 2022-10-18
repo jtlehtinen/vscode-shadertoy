@@ -1,5 +1,5 @@
 'use strict';
 
 export interface WebviewExtension {
-    generateContent(): string;
+  generateContent(): string;
 }

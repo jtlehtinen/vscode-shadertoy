@@ -4,26 +4,28 @@ import * as Types from '../../typenames';
 import { WebviewExtension } from '../webview_extension';
 
 export class BuffersInitExtension implements WebviewExtension {
-    private content: string;
+  private content: string;
 
-    constructor(buffers: Types.BufferDefinition[]) {
-        this.content = '';
-        this.processBuffers(buffers);
-    }
+  constructor(buffers: Types.BufferDefinition[]) {
+    this.content = '';
+    this.processBuffers(buffers);
+  }
 
-    private processBuffers(buffers: Types.BufferDefinition[]) {
-        for (let buffer of buffers) {
-            // Create a RenderTarget for all but the final buffer
-            let target = 'null';
-            let pingPongTarget = 'null';
-            if (buffer !== buffers[buffers.length - 1]) {
-                target = 'new THREE.WebGLRenderTarget(resolution.x, resolution.y, { type: framebufferType })';
-            }
-            if (buffer.UsesSelf) {
-                pingPongTarget = 'new THREE.WebGLRenderTarget(resolution.x, resolution.y, { type: framebufferType })';
-            }
+  private processBuffers(buffers: Types.BufferDefinition[]) {
+    for (let buffer of buffers) {
+      // Create a RenderTarget for all but the final buffer
+      let target = 'null';
+      let pingPongTarget = 'null';
+      if (buffer !== buffers[buffers.length - 1]) {
+        target =
+          'new THREE.WebGLRenderTarget(resolution.x, resolution.y, { type: framebufferType })';
+      }
+      if (buffer.UsesSelf) {
+        pingPongTarget =
+          'new THREE.WebGLRenderTarget(resolution.x, resolution.y, { type: framebufferType })';
+      }
 
-            this.content += `\
+      this.content += `\
 buffers.push({
     Name: '${buffer.Name}',
     File: '${buffer.File}',
@@ -67,10 +69,10 @@ buffers.push({
         }
     })
 });`;
-        }
     }
+  }
 
-    public generateContent(): string {
-        return this.content;
-    }
+  public generateContent(): string {
+    return this.content;
+  }
 }

@@ -3,16 +3,16 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class PauseButtonStyleExtension implements WebviewExtension {
-    private pauseResourcePath: string;
-    private playResourcePath: string;
+  private pauseResourcePath: string;
+  private playResourcePath: string;
 
-    constructor(getWebviewResourcePath: (relativePath: string) => string) {
-        this.pauseResourcePath = getWebviewResourcePath('pause.png');
-        this.playResourcePath = getWebviewResourcePath('play.png');
-    }
+  constructor(getWebviewResourcePath: (relativePath: string) => string) {
+    this.pauseResourcePath = getWebviewResourcePath('pause.png');
+    this.playResourcePath = getWebviewResourcePath('play.png');
+  }
 
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 /* Container for pause button */
 .button-container, .container {
     text-align: center;
@@ -64,5 +64,5 @@ export class PauseButtonStyleExtension implements WebviewExtension {
     background-position: center;
     background-color: rgba(128, 128, 128, 0.5);
 }`;
-    }
+  }
 }

@@ -3,14 +3,14 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class ScreenshotButtonStyleExtension implements WebviewExtension {
-    private screenResourcePath: string;
+  private screenResourcePath: string;
 
-    constructor(getWebviewResourcePath: (relativePath: string) => string) {
-        this.screenResourcePath = getWebviewResourcePath('screen.png');
-    }
+  constructor(getWebviewResourcePath: (relativePath: string) => string) {
+    this.screenResourcePath = getWebviewResourcePath('screen.png');
+  }
 
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 #screenshot {
     position: absolute;
     border: none;
@@ -33,5 +33,5 @@ export class ScreenshotButtonStyleExtension implements WebviewExtension {
     background-color: lightgray;
     transition-duration: 0.1s;
 }`;
-    }
+  }
 }

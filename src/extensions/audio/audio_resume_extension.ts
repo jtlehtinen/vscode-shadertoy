@@ -3,7 +3,7 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class AudioResumeExtension implements WebviewExtension {
-    public generateContent(): string {
-        return 'audioContext.resume();';
-    }
+  public generateContent(): string {
+    return 'audioContext.resume();';
+  }
 }

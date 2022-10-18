@@ -3,10 +3,10 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class NoAudioExtension implements WebviewExtension {
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 const audioContext = {
     sampleRate: 0
 };`;
-    }
+  }
 }

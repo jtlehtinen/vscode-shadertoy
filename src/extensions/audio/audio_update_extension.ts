@@ -3,8 +3,8 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class AudioUpdateExtension implements WebviewExtension {
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 for (let audio of audios) {
     // Get audio data
     audio.Analyser.getByteFrequencyData(audio.Data.subarray(0, audio.Data.length / 2));
@@ -31,5 +31,5 @@ for (let audio of audios) {
     
     audio.Texture.needsUpdate = true;
 }`;
-    }
+  }
 }

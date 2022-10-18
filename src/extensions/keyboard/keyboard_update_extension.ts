@@ -3,8 +3,8 @@
 import { WebviewExtension } from '../webview_extension';
 
 export class KeyboardUpdateExtension implements WebviewExtension {
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 if (pressedKeys.length > 0 || releasedKeys.length > 0) {
     for (let key of pressedKeys) {
         keyBoardData[key + 256] = 0;
@@ -26,5 +26,5 @@ if (pressedKeys.length > 0 || releasedKeys.length > 0) {
     pressedKeys = [];
     releasedKeys = [];
 }`;
-    }
+  }
 }

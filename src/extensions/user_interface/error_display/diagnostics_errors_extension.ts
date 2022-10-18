@@ -3,8 +3,8 @@
 import { WebviewExtension } from '../../webview_extension';
 
 export class DiagnosticsErrorsExtension implements WebviewExtension {
-    public generateContent(): string {
-        return `\
+  public generateContent(): string {
+    return `\
 console.error = function () {
     if('7' in arguments) {
         let errorRegex = /ERROR: \\d+:(\\d+):\\W(.*)\\n/g;
@@ -42,5 +42,5 @@ console.error = function () {
         $('#message').append('</ul>');
     }
 };`;
-    }
+  }
 }
