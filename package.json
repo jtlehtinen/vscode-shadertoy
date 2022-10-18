@@ -2,7 +2,7 @@
     "name": "shader-toy",
     "displayName": "Shader Toy",
     "description": "Live preview of GLSL shaders similar to shadertoy",
-    "version": "0.10.15",
+    "version": "0.10.16",
     "publisher": "stevensona",
     "license": "MIT",
     "repository": {
@@ -61,6 +61,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Master switch for all automatic reloads."
+                },
+                "shader-toy.reloadOnSave": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Reload OpenGL viewport when the opened file is saved."
                 },
                 "shader-toy.reloadOnEditText": {
                     "type": "boolean",

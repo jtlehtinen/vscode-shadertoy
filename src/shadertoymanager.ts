@@ -110,14 +110,13 @@ export class ShaderToyManager {
     }
   };
 
-  public onDocumentChanged = (documentChange: vscode.TextDocumentChangeEvent) => {
+  public onReloadDocument = (document: vscode.TextDocument) => {
     if (this.context.getConfig<boolean>('reloadAutomatically')) {
       const staticWebview = this.staticWebviews.find((webview: StaticWebview) => {
-        return webview.Document === documentChange.document;
+        return webview.Document === document;
       });
       const isActiveDocument =
-        this.context.activeEditor !== undefined &&
-        documentChange.document === this.context.activeEditor.document;
+        this.context.activeEditor !== undefined && document === this.context.activeEditor.document;
       if (isActiveDocument || staticWebview !== undefined) {
         if (this.webviewPanel !== undefined && this.context.activeEditor !== undefined) {
           this.webviewPanel = this.updateWebview(

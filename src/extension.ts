@@ -59,13 +59,19 @@ export function activate(extensionContext: vscode.ExtensionContext) {
       changeEditorEvent.dispose();
     }
 
+    if (context.getConfig<boolean>('reloadOnSave')) {
+      vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) =>
+        shadertoyManager.onReloadDocument(document),
+      );
+    }
+
     if (context.getConfig<boolean>('reloadOnEditText')) {
       let reloadDelay: number = context.getConfig<number>('reloadOnEditTextDelay') || 1.0;
       changeTextEvent = vscode.workspace.onDidChangeTextDocument(
         (documentChange: vscode.TextDocumentChangeEvent) => {
           clearTimeout(timeout);
           timeout = setTimeout(() => {
-            shadertoyManager.onDocumentChanged(documentChange);
+            shadertoyManager.onReloadDocument(documentChange.document);
           }, reloadDelay * 1000);
         },
       );
