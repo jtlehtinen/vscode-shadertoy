@@ -9,4 +9,3 @@ images
 .gitignore
 tsconfig.json
 tslint.json
-webpack.config.js

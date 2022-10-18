@@ -12,7 +12,7 @@
         "url": "https://github.com/stevensona/shader-toy/issues"
     },
     "engines": {
-        "vscode": "^1.40.0"
+        "vscode": "^1.69.0"
     },
     "categories": [
         "Other"
@@ -188,36 +188,26 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "webpack --mode production",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "webpack": "webpack --mode development",
-        "webpack-dev": "webpack --mode development --watch",
-        "pretest": "npm run compile",
-        "test": "node ./out/test/run_tests.js",
-        "deploy": "vsce publish"
-    },
-    "dependencies": {
-        "@types/glob": "^7.1.1",
-        "compare-versions": "^3.6.0",
-        "glob": "^7.1.6",
-        "glslify": "^7.0.0",
-        "mime": "^2.4.5"
+        "build": "tsup src/extension.ts --external vscode",
+        "dev": "tsup --watch --external vscode",
+        "pack": "vsce package --no-dependencies",
+        "test": "vitest",
+        "typecheck": "tsc --noEmit",
+        "vscode:prepublish": "npm run build"
     },
     "devDependencies": {
-        "@types/compare-versions": "^3.3.0",
-        "@types/mime": "^2.0.2",
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^10.17.21",
-        "@types/vscode": "^1.40.0",
-        "mocha": "^7.2.0",
-        "ts-loader": "^6.2.2",
-        "tslint": "^5.20.1",
-        "typescript": "^3.9.2",
-        "vsce": "^1.81.1",
-        "vscode-test": "^1.4.0",
-        "webpack": "^4.43.0",
-        "webpack-cli": "^3.3.11"
+        "@types/glob": "^7.1.1",
+        "@types/mime": "^3.0.1",
+        "@types/node": "^18.11.0",
+        "@types/vscode": "^1.69.0",
+        "glob": "^8.0.3",
+        "glslify": "^7.1.1",
+        "mime": "^3.0.0",
+        "tsup": "^6.3.0",
+        "typescript": "^4.8.4",
+        "vite": "^3.1.8",
+        "vitest": "^0.24.3",
+        "vsce": "^2.11.0"
     },
     "icon": "resources/thumb.png"
 }

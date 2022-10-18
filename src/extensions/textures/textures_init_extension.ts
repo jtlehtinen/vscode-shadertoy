@@ -5,7 +5,6 @@ import { Context } from '../../context';
 import { WebviewExtension } from '../webview_extension';
 import { TextureExtensionExtension } from '../textures/texture_extension_extension';
 import { DiagnosticSeverity } from 'vscode';
-import * as path from 'path';
 import * as fs from 'fs';
 
 export class TexturesInitExtension implements WebviewExtension {
@@ -108,7 +107,7 @@ function(texture) {
     texture.wrapT = ${wrapMode};
 }`;
         };
-        let makeTextureLoadErrorScript = (filename: string) => { 
+        let makeTextureLoadErrorScript = (filename: string) => {
             return `\
 function(err) {
     console.log(err);
@@ -182,7 +181,7 @@ function(err) {
 
                     textures = textures.map((texture: string) => { return  makeAvailableResource(texture); });
                     let textureLoadScript = `new THREE.CubeTextureLoader().load([ "${textures.join('", "')}" ], ${textureOnLoadScript(texture, Number(i), channel)}, undefined, ${makeTextureLoadErrorScript(localPath)})`;
-                
+
                     this.content += `\
 buffers[${i}].Shader.uniforms.iChannel${channel} = { type: 't', value: ${textureLoadScript} };`;
                 }
@@ -193,7 +192,7 @@ buffers[${i}].Shader.uniforms.iChannel${channel} = { type: 't', value: ${texture
                         let magFilter = convertMagFilter(texture.Mag);
                         let minFilter = convertMinFilter(texture.Min);
                         let wrapMode = convertWrapMode(texture.Wrap);
-            
+
                         textureLoadScript = `\
 (() => {
     let texture = buffers[${textureBufferIndex}].Target.texture;

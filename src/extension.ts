@@ -1,9 +1,22 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import * as compare_versions from 'compare-versions';
 import { Context } from './context';
 import { ShaderToyManager } from './shadertoymanager';
+
+function compareVersions(a: string, b: string): number {
+    const pa = a.split('.');
+    const pb = b.split('.');
+    for (let i = 0; i < 3; i++) {
+        const na = Number(pa[i]);
+        const nb = Number(pb[i]);
+        if (na > nb) return 1;
+        if (nb > na) return -1;
+        if (!isNaN(na) && isNaN(nb)) return 1;
+        if (isNaN(na) && !isNaN(nb)) return -1;
+    }
+    return 0;
+}
 
 export function activate(extensionContext: vscode.ExtensionContext) {
     let shadertoyExtension = vscode.extensions.getExtension('stevensona.shader-toy');
@@ -11,7 +24,7 @@ export function activate(extensionContext: vscode.ExtensionContext) {
     if (shadertoyExtension) {
         let lastVersion = extensionContext.globalState.get<string>('version') || '0.0.0';
         let currentVersion = <string | undefined>shadertoyExtension.packageJSON.version || '9.9.9';
-        if (compare_versions(currentVersion, lastVersion) > 0) {
+        if (compareVersions(currentVersion, lastVersion) > 0) {
             vscode.window.showInformationMessage('Your ShaderToy version just got updated, check out the readme to see what\'s new.');
             extensionContext.globalState.update('version', currentVersion);
         }
@@ -45,7 +58,7 @@ export function activate(extensionContext: vscode.ExtensionContext) {
                 }, reloadDelay * 1000);
             });
         }
-        
+
         changeEditorEvent = vscode.window.onDidChangeActiveTextEditor((newEditor: vscode.TextEditor | undefined) => {
             shadertoyManager.onEditorChanged(newEditor);
         });
@@ -63,7 +76,7 @@ export function activate(extensionContext: vscode.ExtensionContext) {
             shadertoyManager.migrateToNewContext(context);
         }
     });
-    
+
     let previewCommand = vscode.commands.registerCommand('shader-toy.showGlslPreview', () => {
         shadertoyManager.showDynamicPreview();
     });
