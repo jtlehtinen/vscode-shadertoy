@@ -16,6 +16,11 @@ type StaticWebview = Webview & {
   Document: vscode.TextDocument;
 };
 
+function basenameForEditor(editor: vscode.TextEditor | undefined): string {
+  const basename = editor !== undefined ? path.basename(editor.document.fileName) : '';
+  return basename;
+}
+
 export class ShaderToyManager {
   context: Context;
 
@@ -46,7 +51,10 @@ export class ShaderToyManager {
     if (this.webviewPanel) {
       this.webviewPanel.Panel.dispose();
     }
-    let newWebviewPanel = this.createWebview('GLSL Preview', undefined);
+
+    const basename = basenameForEditor(this.context.activeEditor);
+    let newWebviewPanel = this.createWebview(`Preview ${basename}`, undefined);
+
     this.webviewPanel = {
       Panel: newWebviewPanel,
       OnDidDispose: () => {
@@ -69,7 +77,9 @@ export class ShaderToyManager {
           return webview.Document === document;
         }) === undefined
       ) {
-        let newWebviewPanel = this.createWebview('Static GLSL Preview', undefined);
+        const basename = basenameForEditor(this.context.activeEditor);
+        let newWebviewPanel = this.createWebview(`Preview (static) ${basename}`, undefined);
+
         let onDidDispose = () => {
           const staticWebview = this.staticWebviews.find((webview: StaticWebview) => {
             return webview.Panel === newWebviewPanel;

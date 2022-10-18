@@ -2,7 +2,7 @@
     "name": "shader-toy",
     "displayName": "Shader Toy",
     "description": "Live preview of GLSL shaders similar to shadertoy",
-    "version": "0.10.17",
+    "version": "0.10.18",
     "publisher": "stevensona",
     "license": "MIT",
     "repository": {
@@ -198,8 +198,8 @@
         }
     },
     "scripts": {
-        "build": "tsup src/extension.ts --external vscode",
-        "dev": "tsup --watch --external vscode",
+        "build": "set NODE_ENV=production & tsup",
+        "dev": "set NODE_ENV=development & tsup --watch",
         "format": "rome format --write ./",
         "lint": "rome check ./",
         "pack": "vsce package --no-dependencies",
