@@ -172,7 +172,7 @@ function(err) {
                             filename: texture.File,
                             diagnostics: [{
                                 line: texture.TypeLine || 0,
-                                message: `Could not find all cubemap files for the given path with wildcard.`
+                                message: 'Could not find all cubemap files for the given path with wildcard.'
                             }]
                         };
                         context.showDiagnostics(diagnosticBatch, DiagnosticSeverity.Error);

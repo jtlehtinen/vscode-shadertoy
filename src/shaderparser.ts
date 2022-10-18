@@ -91,7 +91,7 @@ export class ShaderParser {
         this.lexer = new ShaderLexer(this.stream);
         this.lastObjectRange = undefined;
     }
-    
+
     public mutate(destRange: LineRange, source: string) {
         return this.lexer.mutate(destRange, source);
     }
@@ -126,18 +126,22 @@ export class ShaderParser {
         let tokenValue = nextToken.value as string;
         let returnObject: Object | ErrorObject;
         switch (tokenValue) {
-            case 'include':
+            case 'include': {
                 returnObject = this.getInclude();
                 break;
-            case 'iKeyboard':
+            }
+            case 'iKeyboard': {
                 returnObject = { Type: ObjectType.Keyboard };
                 break;
-            case 'StrictCompatibility':
+            }
+            case 'StrictCompatibility': {
                 returnObject = { Type: ObjectType.StrictCompatibility };
                 break;
-            case 'iUniform':
+            }
+            case 'iUniform': {
                 returnObject = this.getUniformObject();
                 break;
+            }
             default: // Must be iChannel
                 returnObject = this.getTextureObject(nextToken);
                 break;
@@ -148,7 +152,7 @@ export class ShaderParser {
 
         returnObject = returnObject || {
             Type: ObjectType.Error,
-            Message: `Unkown error while parsing for custom features`
+            Message: 'Unkown error while parsing for custom features'
         };
         return returnObject;
     }
@@ -184,7 +188,7 @@ export class ShaderParser {
         let index = parseInt(channelName.replace('iChannel', ''));
 
         if (nextToken.type === TokenType.Punctuation) {
-            return this.getTextureParameter(index);            
+            return this.getTextureParameter(index);
         }
 
         let tokenValue = nextToken.value as string;
@@ -269,7 +273,7 @@ export class ShaderParser {
                 }
         }
 
-        return this.makeError(`Unkown error while parsing texture setting`);
+        return this.makeError('Unkown error while parsing texture setting');
     }
 
     private getUniformObject(): Uniform | ErrorObject {
@@ -314,7 +318,7 @@ export class ShaderParser {
         if (nextToken !== undefined && nextToken.value === "in") {
             this.lexer.next();
             let rangeArray = this.getArray();
-            
+
             if (rangeArray.Type === ObjectType.Error) {
                 return rangeArray;
             }
@@ -334,7 +338,7 @@ export class ShaderParser {
         if (nextToken !== undefined && nextToken.value === "step") {
             this.lexer.next();
             let step = this.getValue();
-            
+
             if (step.Type === ObjectType.Error) {
                 return step;
             }
@@ -346,7 +350,7 @@ export class ShaderParser {
             stepValue = step;
         }
 
-        let isIntegerType = [ "int", "ivec2", "ivec3", "ivec4" ].findIndex((value: string) => value === type) >= 0; 
+        let isIntegerType = [ "int", "ivec2", "ivec3", "ivec4" ].findIndex((value: string) => value === type) >= 0;
 
         let flattenLiteral = (source: LiteralNumber | LiteralValue | undefined) => {
             if (source !== undefined) {
@@ -370,7 +374,7 @@ export class ShaderParser {
         let minValueAsNumber = flattenLiteral(minValue);
         let maxValueAsNumber = flattenLiteral(maxValue);
         let stepValueAsNumber = flattenLiteral(stepValue) || (isIntegerType ? [ 1.0 ] : undefined);
-        
+
         let uniform: Uniform = {
             Type: ObjectType.Uniform,
             Name: name,
@@ -384,7 +388,7 @@ export class ShaderParser {
     }
 
     private getValue(): LiteralNumber | LiteralValue | ErrorObject {
-        let beginPos = this.stream.pos(); 
+        let beginPos = this.stream.pos();
 
         let nextToken = this.lexer.peek();
         if (nextToken === undefined) {
@@ -480,7 +484,7 @@ export class ShaderParser {
     }
 
     private getArray(): LiteralValue | ErrorObject {
-        let beginPos = this.stream.pos(); 
+        let beginPos = this.stream.pos();
 
         let nextToken = this.lexer.next();
         if (nextToken === undefined) {
@@ -499,7 +503,7 @@ export class ShaderParser {
 
         let type = currentValue.ValueType;
         let values: LiteralNumber[] | LiteralValue[] = currentValue.Type === ObjectType.Number ? [ currentValue ] : [ currentValue ];
-        
+
         while (true) {
             nextToken = this.lexer.next();
             if (nextToken === undefined) {
@@ -511,7 +515,7 @@ export class ShaderParser {
             if (nextToken.value === closePunc) {
                 break;
             }
-    
+
             currentValue = this.getValue();
             if (currentValue.Type === ObjectType.Error) {
                 return currentValue;
@@ -546,7 +550,7 @@ export class ShaderParser {
         let lastRangeHighlight = `${' '.repeat(lastRangeColumn - 1)}^${'~'.repeat(lastRangeSize)}^`;
         let error: ErrorObject = {
             Type: ObjectType.Error,
-            Message: message + `\n${this.lexer.getCurrentLine()}\n${lastRangeHighlight}`
+            Message: `${message}\n${this.lexer.getCurrentLine()}\n${lastRangeHighlight}`
         };
         return error;
     }
@@ -556,7 +560,7 @@ export class ShaderParser {
             return [ `float[${type[type.length - 1]}]`, true ];
         }
         else if (type === 'color3') {
-            return [ `float[3]`, true ];
+            return [ 'float[3', true ];
         }
         else if (type.indexOf('ivec') === 0) {
             return [ `int[${type[type.length - 1]}]`, true ];
@@ -572,7 +576,7 @@ export class ShaderParser {
         if (leftType === 'float' && rightType === 'int') {
             return true;
         }
-        else if (leftType == 'int' && rightType == 'float') {
+        else if (leftType === 'int' && rightType === 'float') {
             return false;
         }
 
@@ -586,8 +590,9 @@ export class ShaderParser {
         let getTypeDesc = (typeName: string): TypeDesc => {
             let elements = typeName.split('[');
             let stripped_elements = elements.map((element: string, index: number) => {
-                if (index == 0)
+                if (index === 0) {
                     return element
+                }
                 return element.slice(0, -1);
             });
             let baseTypeName = stripped_elements.shift();
@@ -612,12 +617,12 @@ export class ShaderParser {
         else {
             return false;
         }
-        
+
         if (leftIsVecType as boolean && !rightIsArray && this.testAssignable(leftTypeDesc.BaseTypeName, rightTypeDesc.BaseTypeName)) {
             return true;
         }
 
-        if (leftTypeDesc.ArraySizes.length != rightTypeDesc.ArraySizes.length) {
+        if (leftTypeDesc.ArraySizes.length !== rightTypeDesc.ArraySizes.length) {
             return false;
         }
 
@@ -631,7 +636,7 @@ export class ShaderParser {
             return false;
         }
 
-        let arraySizesMatch = leftTypeDesc.ArraySizes.every((arraySize: number, index: number) => arraySize == 0 || arraySize == rightTypeDesc.ArraySizes[0]);
+        let arraySizesMatch = leftTypeDesc.ArraySizes.every((arraySize: number, index: number) => arraySize === 0 || arraySize === rightTypeDesc.ArraySizes[0]);
         return arraySizesMatch;
     }
 }

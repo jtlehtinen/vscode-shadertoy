@@ -23,7 +23,7 @@ export class ShaderToyManager {
 
     webviewPanel: Webview | undefined;
     staticWebviews: StaticWebview[] = [];
-    
+
     constructor(context: Context) {
         this.context = context;
     }
@@ -36,7 +36,7 @@ export class ShaderToyManager {
         for (let staticWebview of this.staticWebviews) {
             this.updateWebview(staticWebview, staticWebview.Document);
         }
-    } 
+    }
 
     public showDynamicPreview = () => {
         if (this.context.getConfig<boolean>('reloadOnChangeEditor') !== true) {
@@ -157,7 +157,7 @@ export class ShaderToyManager {
         newWebviewPanel.webview.onDidReceiveMessage(
             (message: any) => {
               switch (message.command) {
-                case 'reloadWebview':
+                case 'reloadWebview': {
                     if (this.webviewPanel !== undefined && this.webviewPanel.Panel === newWebviewPanel && this.context.activeEditor !== undefined) {
                         this.updateWebview(this.webviewPanel, this.context.activeEditor.document);
                     }
@@ -169,53 +169,66 @@ export class ShaderToyManager {
                         });
                     }
                     return;
-                case 'updateTime':
+                }
+                case 'updateTime': {
                     this.startingData.Time = message.time;
                     return;
-                case 'updateMouse':
+                }
+                case 'updateMouse': {
                     this.startingData.Mouse = message.mouse;
                     this.startingData.NormalizedMouse = message.normalizedMouse;
                     return;
-                case 'updateKeyboard':
+                }
+                case 'updateKeyboard': {
                     this.startingData.Keys = message.keys;
                     return;
-                case 'updateUniformsGuiOpen':
+                }
+                case 'updateUniformsGuiOpen': {
                     this.startingData.UniformsGui.Open = message.value;
                     return;
-                case 'updateUniformsGuiValue':
+                }
+                case 'updateUniformsGuiValue': {
                     this.startingData.UniformsGui.Values.set(message.name, message.value);
                     return;
-                case 'showGlslDiagnostic':
+                }
+                case 'showGlslDiagnostic': {
                     let diagnosticBatch: DiagnosticBatch = message.diagnosticBatch;
                     let severity: vscode.DiagnosticSeverity;
 
                     switch (message.type) {
-                        case 'error':
+                        case 'error': {
                             severity = vscode.DiagnosticSeverity.Error;
                             break;
-                        case 'warning':
+                        }
+                        case 'warning': {
                             severity = vscode.DiagnosticSeverity.Warning;
                             break;
-                        case 'hint':
+                        }
+                        case 'hint': {
                             severity = vscode.DiagnosticSeverity.Hint;
                             break;
+                        }
                         case 'information':
-                        default:
+                        default: {
                             severity = vscode.DiagnosticSeverity.Information;
                             break;
+                        }
                     }
 
                     this.context.showDiagnostics(diagnosticBatch, severity);
                     return;
-                case 'showGlslsError': 
+                }
+                case 'showGlslsError': {
                     let file: string = message.file;
                     let line: number = message.line;
 
                     this.context.revealLine(file, line);
                     return;
-                case 'errorMessage':
+                }
+                case 'errorMessage': {
                     vscode.window.showErrorMessage(message.message);
                     return;
+                }
                 }
             },
             undefined,
@@ -223,7 +236,7 @@ export class ShaderToyManager {
         );
         return newWebviewPanel;
     }
-    
+
     private updateWebview = <T extends Webview | StaticWebview>(webviewPanel: T, document: vscode.TextDocument): T => {
         this.context.clearDiagnostics();
         let webviewContentProvider = new WebviewContentProvider(this.context, document.getText(), document.fileName);

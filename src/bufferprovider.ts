@@ -168,10 +168,10 @@ export class BufferProvider {
                             vscode.window.showErrorMessage(`Could not open file: ${userPath}`);
                             return;
                         }
-    
+
                         // Parse the shader
                         this.parseShaderCodeInternal(rootFile, depFile, shaderFile.bufferCode, buffers, commonIncludes, generateStandalone);
-            
+
                         // Push buffers as textures
                         textures.push({
                             Channel: channel,
@@ -222,7 +222,7 @@ export class BufferProvider {
                         }
                     }
                     else {
-                        vscode.window.showWarningMessage(`You are trying to use an audio file, which is currently disabled in the settings.`);
+                        vscode.window.showWarningMessage('You are trying to use an audio file, which is currently disabled in the settings.');
                     }
                     break;
                 }
@@ -297,7 +297,7 @@ void main() {
             }
             if (this.context.getConfig<boolean>('warnOnUndefinedTextures')) {
                 for (let i = 0; i < 9; i++) {
-                    if (code.search('iChannel' + i) > 0) {
+                    if (code.search(`iChannel${i}`) > 0) {
                         if (definedTextures[i] === undefined) {
                             vscode.window.showWarningMessage(`iChannel${i} in use but there is no definition #iChannel${i} in shader`, 'Details')
                                 .then(() => {
@@ -316,7 +316,8 @@ void main() {
                 code = glsl(code);
             }
             catch(e) {
-                vscode.window.showErrorMessage(e.message);
+                const errorMessage = (e instanceof Error) ? e.message : `unexpected error: ${e}`;
+                vscode.window.showErrorMessage(errorMessage);
             }
         }
 
@@ -337,9 +338,9 @@ void main() {
         });
     }
 
-    private transformCode(rootFile: string, file: string, code: string, lineOffset: Types.BoxedValue<number>, textures: InputTexture[], textureSettings: Map<ChannelId, InputTextureSettings>, 
+    private transformCode(rootFile: string, file: string, code: string, lineOffset: Types.BoxedValue<number>, textures: InputTexture[], textureSettings: Map<ChannelId, InputTextureSettings>,
                           uniforms: Types.UniformDefinition[], includes: Types.IncludeDefinition[], sharedIncludes: Types.IncludeDefinition[], usesKeyboard: Types.BoxedValue<boolean>,  strictComp: Types.BoxedValue<boolean>, generateStandalone: boolean): string {
-        
+
         let addTextureSettingIfNew = (channel: number) => {
             if (textureSettings.get(channel) === undefined) {
                 textureSettings.set(channel, {});
@@ -367,9 +368,10 @@ void main() {
             }
 
             switch (nextObject.Type) {
-                case ObjectType.Error:
+                case ObjectType.Error: {
                     this.showErrorAtLine(file, nextObject.Message, parser.line());
                     break;
+                }
                 case ObjectType.Texture: {
                     let userPath = nextObject.Path;
                     let textureFile: string;
@@ -412,7 +414,7 @@ void main() {
                     removeLastObject();
                     break;
                 }
-                case ObjectType.TextureMagFilter:
+                case ObjectType.TextureMagFilter: {
                     addTextureSettingIfNew(nextObject.Index);
                     thisTextureSettings = textureSettings.get(nextObject.Index);
                     if (thisTextureSettings !== undefined) {
@@ -421,7 +423,8 @@ void main() {
                     }
                     removeLastObject();
                     break;
-                case ObjectType.TextureMinFilter:
+                }
+                case ObjectType.TextureMinFilter: {
                     addTextureSettingIfNew(nextObject.Index);
                     thisTextureSettings = textureSettings.get(nextObject.Index);
                     if (thisTextureSettings !== undefined) {
@@ -430,7 +433,8 @@ void main() {
                     }
                     removeLastObject();
                     break;
-                case ObjectType.TextureWrapMode:
+                }
+                case ObjectType.TextureWrapMode: {
                     addTextureSettingIfNew(nextObject.Index);
                     thisTextureSettings = textureSettings.get(nextObject.Index);
                     if (thisTextureSettings !== undefined) {
@@ -439,7 +443,8 @@ void main() {
                     }
                     removeLastObject();
                     break;
-                case ObjectType.TextureType:
+                }
+                case ObjectType.TextureType: {
                     addTextureSettingIfNew(nextObject.Index);
                     thisTextureSettings = textureSettings.get(nextObject.Index);
                     if (thisTextureSettings !== undefined) {
@@ -448,11 +453,12 @@ void main() {
                     }
                     removeLastObject();
                     break;
+                }
                 case ObjectType.Include: {
                     let userPath = nextObject.Path;
                     let includeFile: string;
                     ({ file: includeFile, userPath: userPath } = this.context.mapUserPath(userPath, file));
-                    
+
                     let sharedIncludeIndex = sharedIncludes.findIndex((value: Types.IncludeDefinition) => {
                         if (value.File === includeFile) {
                             return true;
@@ -489,7 +495,7 @@ void main() {
 
                     break;
                 }
-                case ObjectType.Uniform:
+                case ObjectType.Uniform: {
                     if (nextObject.Default !== undefined && nextObject.Min !== undefined && nextObject.Max !== undefined) {
                         let range = [ nextObject.Min, nextObject.Max ];
                         for (let i of [ 0, 1 ]) {
@@ -514,11 +520,11 @@ void main() {
 
                     if (nextObject.Default === undefined && nextObject.Min !== undefined) {
                         nextObject.Default = nextObject.Min;
-                        this.showDiagnosticAtLine(file, `Custom uniform specifies no default value, the minimum of its range will be used.`, parser.line(), vscode.DiagnosticSeverity.Information);
+                        this.showDiagnosticAtLine(file, 'Custom uniform specifies no default value, the minimum of its range will be used.', parser.line(), vscode.DiagnosticSeverity.Information);
                     }
 
                     if (nextObject.Default === undefined) {
-                        this.showErrorAtLine(file, `Can not deduce default value for custom uniform, either define a default value or range`, parser.line());
+                        this.showErrorAtLine(file, 'Can not deduce default value for custom uniform, either define a default value or range', parser.line());
                     }
                     else {
                         let uniform: Types.UniformDefinition = {
@@ -533,14 +539,17 @@ void main() {
                     }
                     removeLastObject();
                     break;
-                case ObjectType.Keyboard:
+                }
+                case ObjectType.Keyboard: {
                     usesKeyboard.Value = true;
                     removeLastObject();
                     break;
-                case ObjectType.StrictCompatibility:
+                }
+                case ObjectType.StrictCompatibility: {
                     strictComp.Value = true;
                     removeLastObject();
                     break;
+                }
                 default:
                     break;
             }
@@ -548,7 +557,7 @@ void main() {
 
         return code;
     }
-    
+
     private showDiagnosticAtLine(file: string, message: string, line: number, severity: vscode.DiagnosticSeverity) {
         let diagnosticBatch: Types.DiagnosticBatch = {
             filename: file,

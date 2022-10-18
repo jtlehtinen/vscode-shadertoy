@@ -252,8 +252,7 @@ describe('Parsing Tests', () => {
 
     {
         it('Assignability Tests', () => {
-            const emptyContents = '';
-            const parser = new ShaderParser(emptyContents);
+            const parser = new ShaderParser('');
             expect(parser['testAssignable']('int', 'int')).toStrictEqual(true);
             expect(parser['testAssignable']('float', 'int')).toStrictEqual(true);
             expect(parser['testAssignable']('float', 'float')).toStrictEqual(true);

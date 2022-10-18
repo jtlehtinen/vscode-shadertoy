@@ -65,10 +65,10 @@ export class WebviewContentProvider {
     private webviewAssembler: WebviewContentAssembler;
     private documentContent: string;
     private documentName: string;
-    
+
     private buffers: Types.BufferDefinition[];
     private commonIncludes: Types.IncludeDefinition[];
-    
+
     constructor(context: Context, documentContent: string, documentName: string) {
         this.context = context;
         this.webviewAssembler = new WebviewContentAssembler(context);
@@ -102,7 +102,7 @@ export class WebviewContentProvider {
                     this.buffers.push({
                         Name: 'final-blit',
                         File: 'final-blit',
-                        Code: `void main() { gl_FragColor = texture2D(iChannel0, gl_FragCoord.xy / iResolution.xy); }`,
+                        Code: 'void main() { gl_FragColor = texture2D(iChannel0, gl_FragCoord.xy / iResolution.xy); }',
                         TextureInputs: [{
                             Channel: 0,
                             File: "",
@@ -274,7 +274,7 @@ export class WebviewContentProvider {
 
             let audioUpdateExtension = new AudioUpdateExtension();
             this.webviewAssembler.addWebviewModule(audioUpdateExtension, '// Audio Update');
-            
+
             let audioPauseExtension = new AudioPauseExtension();
             this.webviewAssembler.addWebviewModule(audioPauseExtension, '// Audio Pause');
 
@@ -353,7 +353,7 @@ export class WebviewContentProvider {
                 this.webviewAssembler.addWebviewModule(reloadButtonExtension, '<!-- Reload Element -->');
             }
         }
-        
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Error Handling
         let errorsExtension: WebviewExtension;

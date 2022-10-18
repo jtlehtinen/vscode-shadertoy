@@ -23,7 +23,7 @@ export class AudioInitExtension implements WebviewExtension, TextureExtensionExt
                 const audio = audios[j];
 
                 const channel = audio.Channel;
-                
+
                 const localPath = audio.LocalPath;
                 const remotePath = audio.RemotePath;
 
@@ -64,7 +64,7 @@ export class AudioInitExtension implements WebviewExtension, TextureExtensionExt
                                     audio.connect(analyser);
                                     analyser.connect(audioContext.destination);
                                     audio.start(0, startingTime % audioBuffer.duration);
-        
+
                                     audios.push({
                                         Channel: ${channel},
                                         Media: audio,
@@ -102,9 +102,10 @@ export class AudioInitExtension implements WebviewExtension, TextureExtensionExt
             this.content = `
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             const audioContext = new AudioContext();
-            
+
             let audios = [];
-            ` + this.content;
+            ${this.content}
+            `;
         }
         else {
             this.content = `
