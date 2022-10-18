@@ -1,0 +1,27 @@
+{
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "quoteProperties": "asNeeded"
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentSize": 2,
+    "lineWidth": 100,
+    "ignore": [
+      "dist",
+      "node_modules",
+      "resources"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "ignore": [
+      "dist",
+      "node_modules",
+      "resources"
+    ]
+  }
+}

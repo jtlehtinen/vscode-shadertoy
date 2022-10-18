@@ -190,6 +190,8 @@
     "scripts": {
         "build": "tsup src/extension.ts --external vscode",
         "dev": "tsup --watch --external vscode",
+        "format": "rome format --write ./",
+        "lint": "rome check ./",
         "pack": "vsce package --no-dependencies",
         "test": "vitest",
         "typecheck": "tsc --noEmit",
@@ -203,6 +205,7 @@
         "glob": "^8.0.3",
         "glslify": "^7.1.1",
         "mime": "^3.0.0",
+        "rome": "0.10.1-next",
         "tsup": "^6.3.0",
         "typescript": "^4.8.4",
         "vite": "^3.1.8",
