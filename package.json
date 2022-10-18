@@ -2,7 +2,7 @@
     "name": "shader-toy",
     "displayName": "Shader Toy",
     "description": "Live preview of GLSL shaders similar to shadertoy",
-    "version": "0.10.16",
+    "version": "0.10.17",
     "publisher": "stevensona",
     "license": "MIT",
     "repository": {
@@ -170,22 +170,27 @@
         "menus": {
             "editor/context": [
                 {
+                    "when": "resourceLangId == glsl",
                     "command": "shader-toy.showGlslPreview",
                     "group": "ShaderToy-Core"
                 },
                 {
+                    "when": "resourceLangId == glsl",
                     "command": "shader-toy.showStaticGlslPreview",
                     "group": "ShaderToy-Core"
                 },
                 {
+                    "when": "resourceLangId == glsl",
                     "command": "shader-toy.createPortableGlslPreview",
                     "group": "ShaderToy"
                 },
                 {
+                    "when": "resourceLangId == glsl",
                     "command": "shader-toy.pauseGlslPreviews",
                     "group": "ShaderToy"
                 },
                 {
+                    "when": "resourceLangId == glsl",
                     "command": "shader-toy.saveGlslPreviewScreenShots",
                     "group": "ShaderToy"
                 }
